@@ -1,11 +1,12 @@
-use std::ops::Add;
+use {
+    crate::{cell::Cell, RANGE},
+    std::ops::{Add, Neg},
+};
 
-pub const RANGE: isize = 9;
-
-#[derive(Clone, Eq, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Pos {
-    i: isize,
-    j: isize,
+    pub i: isize,
+    pub j: isize,
 }
 
 impl Add for Pos {
@@ -19,16 +20,16 @@ impl Add for Pos {
 }
 
 impl Pos {
-    /// constructor
+    /// constructor without range check
     pub fn at(i: isize, j: isize) -> Pos {
         Pos { i, j }
     }
-    /// return None if out of range.
-    pub fn valid(self) -> Option<Pos> {
-        if 1 <= self.i && self.i <= RANGE && 1 <= self.j && self.j <= RANGE {
-            Some(self)
-        } else {
-            None
+    /// set a digit
+    pub fn state(self, digit: usize, on: bool) -> Cell {
+        Cell {
+            pos: self,
+            digit,
+            on,
         }
     }
     /// return literal for a digit at (i, j).
@@ -37,21 +38,15 @@ impl Pos {
         if on {
             var as i32
         } else {
-            -1 * (var as i32)
+            (var as i32).neg()
         }
     }
-}
-
-pub fn lit(i: isize, j: isize, d: usize, b: bool) -> Option<i32> {
-    if 1 <= i && i <= RANGE && 1 <= j && j <= RANGE && 1 <= d && d <= RANGE as usize {
-        let var = (j - 1) * RANGE * RANGE + (i - 1) * RANGE + ((d - 1) as isize) + 1;
-        assert!(var.abs() < RANGE.pow(3));
-        if b {
-            Some(var as i32)
+    /// return None if out of range.
+    pub fn valid(self) -> Option<Pos> {
+        if 1 <= self.i && self.i <= RANGE && 1 <= self.j && self.j <= RANGE {
+            Some(self)
         } else {
-            Some(-1 * (var as i32))
+            None
         }
-    } else {
-        None
     }
 }
