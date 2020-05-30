@@ -29,6 +29,10 @@ for i in 1..=RANGE {
 }
 ```
 
+3. Convert the rules to a CNF
+
+4. Run SAT solver
+
 # Result, the only one result
 
 ```plain
