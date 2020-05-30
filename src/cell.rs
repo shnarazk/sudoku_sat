@@ -37,7 +37,7 @@ impl Cell {
     pub fn requires(self, other: Cell) -> Vec<i32> {
         vec![self.as_lit().neg(), other.as_lit()]
     }
-    /// decode an assignment returned by Splr to (i, j, digit)
+    /// decode an assignment returned by Splr to `(i, j, digit, flag)`
     pub fn decode(a: i32) -> (isize, isize, usize, bool) {
         (
             (a as isize - 1) / (RANGE * RANGE) + 1,

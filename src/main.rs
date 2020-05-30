@@ -1,5 +1,5 @@
 use {
-    miracle_sudoku::{cell::*, pos::*, RANGE, miracle::*, Rules},
+    miracle_sudoku::{cell::*, miracle::*, pos::*, Rules, RANGE},
     splr::*,
     std::convert::TryFrom,
 };
