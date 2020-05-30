@@ -33,7 +33,6 @@ for i in 1..=RANGE {
 
 ```plain
 $ cargo run --release
-cargo run --releasecargo
     Finished release [optimized] target(s) in 0.00s
      Running `target/release/miracle_sudoku`
 #rules: 22248
