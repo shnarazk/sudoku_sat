@@ -29,22 +29,14 @@ for i in 1..=RANGE {
 }
 ```
 
-# Results
+# Result, the only one result
 
 ```plain
-#rules: 20061
-9 4 8 3 7 2 6 1 5 
-7 2 6 1 5 9 4 8 3 
-1 5 9 4 8 3 7 2 6 
-8 3 7 2 6 1 5 9 4 
-2 6 1 5 9 4 8 3 7 
-5 9 4 8 3 7 2 6 1 
-3 7 2 6 1 5 9 4 8 
-6 1 5 9 4 8 3 7 2 
-4 8 3 7 2 6 1 5 9 
-```
-
-```plain
+$ cargo run --release
+cargo run --releasecargo
+    Finished release [optimized] target(s) in 0.00s
+     Running `target/release/miracle_sudoku`
+#rules: 22248
 4 8 3 7 2 6 1 5 9 
 7 2 6 1 5 9 4 8 3 
 1 5 9 4 8 3 7 2 6 
@@ -54,6 +46,8 @@ for i in 1..=RANGE {
 3 7 2 6 1 5 9 4 8 
 6 1 5 9 4 8 3 7 2 
 9 4 8 3 7 2 6 1 5 
+
+$ 
 ```
 
 ![](https://user-images.githubusercontent.com/997855/83323585-d5920000-a29a-11ea-9635-d5ac4bd152fa.png)

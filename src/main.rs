@@ -89,11 +89,13 @@ fn sudoku_rules() -> Rules {
             //
             // constraints over the compartment
             //
-            for target_i in i + 1..=(i / 3) * 3 {
-                for target_j in j + 1..=(j / 3) * 3 {
+            for target_i in i..=((i - 1) / 3 + 1) * 3 {
+                for target_j in j..=((j - 1) / 3 + 1) * 3 {
                     let t = Pos::at(target_i, target_j);
-                    for d in 1..=RANGE as usize {
-                        rules.push(p.state(d, true).requires(t.state(d, false)));
+                    if p != t {
+                        for d in 1..=RANGE as usize {
+                            rules.push(p.state(d, true).requires(t.state(d, false)));
+                        }
                     }
                 }
             }
