@@ -16,11 +16,11 @@ pub fn main() {
         Pos::at(5, 3).state(1, true).as_lit(),
         Pos::at(6, 7).state(2, true).as_lit(),
         // his answer
-//        Pos::at(1, 1).state(4, true).as_lit(),
-//        Pos::at(1, 2).state(8, true).as_lit(),
-//        Pos::at(1, 3).state(3, true).as_lit(),
-//        Pos::at(1, 4).state(7, true).as_lit(),
-//        Pos::at(1, 5).state(2, true).as_lit(),
+        // Pos::at(1, 1).state(4, true).as_lit(),
+        // Pos::at(1, 2).state(8, true).as_lit(),
+        // Pos::at(1, 3).state(3, true).as_lit(),
+        // Pos::at(1, 4).state(7, true).as_lit(),
+        // Pos::at(1, 5).state(2, true).as_lit(),
     ];
     for a in setting.iter() {
         solver.add_assignment(*a).expect("panic");

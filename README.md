@@ -42,7 +42,9 @@ for i in 1..=RANGE {
 3 7 2 6 1 5 9 4 8 
 6 1 5 9 4 8 3 7 2 
 4 8 3 7 2 6 1 5 9 
+```
 
+```plain
 4 8 3 7 2 6 1 5 9 
 7 2 6 1 5 9 4 8 3 
 1 5 9 4 8 3 7 2 6 
@@ -53,3 +55,5 @@ for i in 1..=RANGE {
 6 1 5 9 4 8 3 7 2 
 9 4 8 3 7 2 6 1 5 
 ```
+
+![](https://user-images.githubusercontent.com/997855/83323585-d5920000-a29a-11ea-9635-d5ac4bd152fa.png)
