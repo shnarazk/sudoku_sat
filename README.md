@@ -16,10 +16,10 @@ struct Cell { pos: Pos, digit: usize, on: bool };
 ```rust
 for i in 1..=RANGE {
     for j in 1..=RANGE {
-        let p = Pos::from(i, j); 
+        let p = Pos::at(i, j);
         for target_i in i..=RANGE {
             for target_j in j..=RANGE {
-                 let t = Pos::from(target_i, target_j);
+                 let t = Pos::at(target_i, target_j);
                  for d in 1..=RANGE {
                      rules.push(p.state(d, true).requires(t.state(d, false));
                  }
