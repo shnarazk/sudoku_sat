@@ -1,6 +1,6 @@
 # Miracle Sudoku
 
-![](https://2.bp.blogspot.com/-KNXWZSn8qlA/WMfBy-yWbCI/AAAAAAABCiI/5F9NWxzgYsI_JW725iMYyWn_jYcatAx3wCLcB/s400/book_nanpure.png)
+https://www.youtube.com/watch?v=cvEq_XkQg8U
 
 ## Approach
 
@@ -8,7 +8,7 @@
 
 ```rust
 struct Pos { i: isize, j: isize };
-sturct Cell { pos: Pos, digit: usize, on: bool };
+struct Cell { pos: Pos, digit: usize, on: bool };
 ```
 
 2. Generate Sudoku rules and extra rules
@@ -22,9 +22,9 @@ for i in 1..=RANGE {
                  let t = Pos::from(target_i, target_j);
                  for d in 1..=RANGE {
                      rules.push(p.state(d, true).requires(t.state(d, false));
-		         }
-		    }
-		}
+                 }
+            }
+        }
      }
 }
 ```
