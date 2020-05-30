@@ -4,54 +4,52 @@
 
 ## Approach
 
-0. Preparation
+1. Preparation
 
 ```rust
-const RANGE: isize = 9;
-
-#[derive(Clone, Eq, Debug, PartialEq)]
-struct Pos {
-    i: isize,
-	j: isize,
-}
-
-impl Add for Pos {..}
-
-impl Pos {
-  /// return None if out of range.
-  fn valid(&self) -> Option<Pos>;
-  /// return literal for a digit at (i, j). 
-  fn to_lit(&self, digit: usize, on: bool) -> i32;
+struct Pos { i: isize, j: isize };
+sturct Cell { pos: Pos, digit: usize, on: bool };
 ```
 
-1. Generate Sudoku rules
+2. Generate Sudoku rules and extra rules
 
 ```rust
-let rules = Vec::new();
-
-for j in 0..RANGE {
-  for i in 0..RANGE {
-    let p = Pos::from(i, j);
-    // for column
-	let target_j = j;
-    for target_i in i+1..RANGE {
-	   let t = Pos::from(target_i, target_j);	
-       for d in 1..=9 {
-		   rules.push(vec![p.to_lit(d, true), t.to_lit(d, false)]);
-	   }
-    }
-	// for column
-	let target_i = i;
-    for target_j in j+1..RANGE {
-	   ...
-    }
-  }
-}
-for block_j in 0..RANGE/3 {
-  for block_i in 0..RANGE/3 {
-    ..
-  }
+for i in 1..=RANGE {
+    for j in 1..=RANGE {
+        let p = Pos::from(i, j); 
+        for target_i in i..=RANGE {
+            for target_j in j..=RANGE {
+                 let t = Pos::from(target_i, target_j);
+                 for d in 1..=RANGE {
+                     rules.push(p.state(d, true).requires(t.state(d, false));
+		         }
+		    }
+		}
+     }
 }
 ```
 
-2 Add extra rules
+# Results
+
+```plain
+#rules: 20061
+9 4 8 3 7 2 6 1 5 
+7 2 6 1 5 9 4 8 3 
+1 5 9 4 8 3 7 2 6 
+8 3 7 2 6 1 5 9 4 
+2 6 1 5 9 4 8 3 7 
+5 9 4 8 3 7 2 6 1 
+3 7 2 6 1 5 9 4 8 
+6 1 5 9 4 8 3 7 2 
+4 8 3 7 2 6 1 5 9 
+
+4 8 3 7 2 6 1 5 9 
+7 2 6 1 5 9 4 8 3 
+1 5 9 4 8 3 7 2 6 
+8 3 7 2 6 1 5 9 4 
+2 6 1 5 9 4 8 3 7 
+5 9 4 8 3 7 2 6 1 
+3 7 2 6 1 5 9 4 8 
+6 1 5 9 4 8 3 7 2 
+9 4 8 3 7 2 6 1 5 
+```

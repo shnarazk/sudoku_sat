@@ -1,18 +1,31 @@
 use {
-    miracle_sudoku::{cell::*, pos::*, RANGE},
+    miracle_sudoku::{cell::*, pos::*, RANGE, miracle::*, Rules},
     splr::*,
     std::convert::TryFrom,
 };
 
 pub fn main() {
-    let rules = sudoku_rules();
+    let mut rules = sudoku_rules();
+    rules.append(&mut miracle_knights());
+    rules.append(&mut miracle_kings());
+    rules.append(&mut miracle_orthogonal());
     println!("#rules: {}", rules.len()); // println!("{:?}", &rules[1..20]);
     let mut solver = Solver::try_from((Config::default(), rules.as_ref())).expect("panic");
-    let setting: Vec<i32> = vec![Pos::at(1, 2).state(3, true).as_lit()];
+    let setting: Vec<i32> = vec![
+        // the given problem
+        Pos::at(5, 3).state(1, true).as_lit(),
+        Pos::at(6, 7).state(2, true).as_lit(),
+        // his answer
+//        Pos::at(1, 1).state(4, true).as_lit(),
+//        Pos::at(1, 2).state(8, true).as_lit(),
+//        Pos::at(1, 3).state(3, true).as_lit(),
+//        Pos::at(1, 4).state(7, true).as_lit(),
+//        Pos::at(1, 5).state(2, true).as_lit(),
+    ];
     for a in setting.iter() {
         solver.add_assignment(*a).expect("panic");
     }
-    for ans in solver.iter().take(4) {
+    for ans in solver.iter().take(8) {
         let mut picked = ans.iter().filter(|l| 0 < **l).collect::<Vec<&i32>>();
         assert_eq!((RANGE * RANGE) as usize, picked.len());
         for _i in 1..=RANGE {
@@ -26,7 +39,7 @@ pub fn main() {
     }
 }
 
-fn sudoku_rules() -> Vec<Vec<i32>> {
+fn sudoku_rules() -> Rules {
     let mut rules = Vec::new();
     for i in 1..=RANGE {
         for j in 1..=RANGE {
