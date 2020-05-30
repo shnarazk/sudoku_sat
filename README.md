@@ -1,5 +1,7 @@
 # Miracle Sudoku
 
+![](https://2.bp.blogspot.com/-KNXWZSn8qlA/WMfBy-yWbCI/AAAAAAABCiI/5F9NWxzgYsI_JW725iMYyWn_jYcatAx3wCLcB/s400/book_nanpure.png)
+
 ## Approach
 
 0. Preparation
