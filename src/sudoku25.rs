@@ -64,9 +64,9 @@ pub fn sudoku_block() -> Rules {
         for j in (0..bsize).map(|k| k * bsize + 1) {
             let base = Pos::at(i, j);
             for tail in 0..block_walk.len() {
-                if let Some(p) = (base + block_walk[tail]).valid() {
+                if let Some(p) = (base + block_walk[tail]).valid(25) {
                     for offset in &block_walk[tail + 1..] {
-                        if let Some(q) = (base + *offset).valid() {
+                        if let Some(q) = (base + *offset).valid(25) {
                             for d in 1..=(RANGE as usize) {
                                 rules.push(p.state(d, true).requires(q.state(d, false)));
                             }

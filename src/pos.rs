@@ -32,7 +32,7 @@ impl<'a> Iterator for Neighbors<'a> {
     type Item = Pos;
     fn next(&mut self) -> Option<Self::Item> {
         for i in self.index..self.around.len() {
-            if let Some(res) = (self.base + self.around[i]).valid() {
+            if let Some(res) = (self.base + self.around[i]).valid(RANGE) {
                 self.index = i + 1;
                 return Some(res);
             }
@@ -73,8 +73,8 @@ impl Pos {
         }
     }
     /// return None if out of range.
-    pub fn valid(self) -> Option<Pos> {
-        if 1 <= self.i && self.i <= RANGE && 1 <= self.j && self.j <= RANGE {
+    pub fn valid(self, range: isize) -> Option<Pos> {
+        if 1 <= self.i && self.i <= range && 1 <= self.j && self.j <= range {
             Some(self)
         } else {
             None
