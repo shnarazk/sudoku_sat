@@ -1,5 +1,5 @@
 use {
-    miracle_sudoku::{cell::*, sudoku25::*, pos::*, Rules, RANGE, cnf::*},
+    miracle_sudoku::{cell::*, cnf::*, pos::*, sudoku25::*, Rules, RANGE},
     splr::*,
     std::convert::TryFrom,
 };
@@ -16,8 +16,10 @@ pub fn main() {
     config.splr_interface = true;
     config.quiet_mode = false;
     let mut solver = Solver::try_from((config, rules.as_ref())).expect("panic");
-    let setting: Vec<i32> =
-        parse_s25().iter().map(|(p, d)| p.state(*d, true).as_lit()).collect::<Vec<_>>();
+    let setting: Vec<i32> = parse_s25()
+        .iter()
+        .map(|(p, d)| p.state(*d, true).as_lit())
+        .collect::<Vec<_>>();
     for a in setting.iter() {
         solver.add_assignment(*a).expect("panic");
     }
