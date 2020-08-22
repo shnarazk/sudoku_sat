@@ -33,11 +33,9 @@ fn forbid(moves: &[Pos]) -> Rules {
     for i in 1..=RANGE {
         for j in 1..=RANGE {
             let p = Pos::at(i, j);
-            for m in moves.iter() {
-                if let Some(t) = (p + *m).valid() {
-                    for d in 1..=RANGE as usize {
-                        rules.push(p.state(d, true).requires(t.state(d, false)));
-                    }
+            for q in p.neighbors(moves) {
+                for d in 1..=RANGE as usize {
+                    rules.push(p.state(d, true).requires(q.state(d, false)));
                 }
             }
         }
@@ -56,11 +54,9 @@ pub fn miracle_orthogonal() -> Rules {
     for i in 1..=RANGE {
         for j in 1..=RANGE {
             let p = Pos::at(i, j);
-            for m in dirs.iter() {
-                if let Some(t) = (p + *m).valid() {
-                    for d in 1..RANGE as usize {
-                        rules.push(p.state(d, true).requires(t.state(d + 1, false)));
-                    }
+            for q in p.neighbors(&dirs) {
+                for d in 1..RANGE as usize {
+                    rules.push(p.state(d, true).requires(q.state(d + 1, false)));
                 }
             }
         }

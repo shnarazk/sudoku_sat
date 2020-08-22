@@ -1,7 +1,7 @@
 use {
     crate::{cell::Cell, RANGE},
     std::{
-        iter::{IntoIterator, Iterator},
+        iter::Iterator,
         ops::{Add, Neg},
     },
 };
