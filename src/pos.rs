@@ -7,6 +7,20 @@ use {
 };
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+pub struct World {
+    pub range: usize,
+}
+
+impl World {
+    pub fn at(i: usize, j: usize) -> Pos {
+        Pos::at(i as isize, j as isize)
+    }
+    pub fn valid(&self, pos: Pos) -> Option<Pos> {
+        pos.valid(self.range as isize)
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Pos {
     pub i: isize,
     pub j: isize,
