@@ -10,16 +10,17 @@ pub fn main() {
     rules.append(&mut sudoku_row());
     rules.append(&mut sudoku_column());
     rules.append(&mut sudoku_block());
-    // println!("#rules: {}", rules.len()); // println!("{:?}", &rules[1..20]);
-    // dump_as_cnf(&rules);
-    let mut config = Config::default();
-    config.splr_interface = true;
-    config.quiet_mode = false;
-    let mut solver = Solver::try_from((config, rules.as_ref())).expect("panic");
     let setting: Vec<i32> = parse_s25()
         .iter()
         .map(|(p, d)| p.state(*d, true).as_lit())
         .collect::<Vec<_>>();
+    // println!("#rules: {}", rules.len()); // println!("{:?}", &rules[1..20]);
+    dump_as_cnf(&rules, &setting);
+    return;
+    let mut config = Config::default();
+    config.splr_interface = true;
+    config.quiet_mode = false;
+    let mut solver = Solver::try_from((config, rules.as_ref())).expect("panic");
     for a in setting.iter() {
         solver.add_assignment(*a).expect("panic");
     }
