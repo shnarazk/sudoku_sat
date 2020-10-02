@@ -5,13 +5,17 @@ pub fn sudoku_ident() -> Rules {
     for i in 1..=RANGE {
         for j in 1..=RANGE {
             let p = Pos::at(i, j);
+            // at-least constraints
             let v = (1..=(RANGE as usize))
                 .map(|d| p.state(d, true).as_lit())
                 .collect::<Vec<_>>();
             rules.push(v);
+            // at-most constraints
             for d in 1..=(RANGE as usize) {
-                for dd in d + 1..(RANGE as usize) {
-                    rules.push(p.state(d, true).requires(p.state(dd, false)));
+                for dd in 1..(RANGE as usize) {
+                    if d != dd {
+                        rules.push(p.state(d, true).requires(p.state(dd, false)));
+                    }
                 }
             }
         }
