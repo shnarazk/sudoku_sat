@@ -7,6 +7,7 @@ use {
 pub fn main() {
     let mut rules: Rules = Vec::new();
     rules.append(&mut sudoku_ident());
+    rules.append(&mut sudoku_ident2());
     rules.append(&mut sudoku_row());
     rules.append(&mut sudoku_column());
     rules.append(&mut sudoku_block());

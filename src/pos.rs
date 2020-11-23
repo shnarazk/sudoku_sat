@@ -61,7 +61,7 @@ impl Pos {
         Pos { i, j }
     }
     /// into iterator
-    pub fn neighbors<'a>(self, around: &'a [Pos]) -> Neighbors<'a> {
+    pub fn neighbors(self, around: &[Pos]) -> Neighbors {
         Neighbors {
             base: self,
             around,

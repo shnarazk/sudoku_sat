@@ -23,6 +23,49 @@ pub fn sudoku_ident() -> Rules {
     rules
 }
 
+pub fn sudoku_ident2() -> Rules {
+    let mut rules = Vec::new();
+
+    // squares
+    let bsize = (RANGE as f64).sqrt() as isize;
+    let mut block_walk = Vec::new();
+    for i in 0..bsize {
+        for j in 0..bsize {
+            block_walk.push(Pos::at(i, j));
+        }
+    }
+
+    // for values
+    for n in 1..=RANGE {
+        // rows
+        for i in 1..=RANGE {
+            rules.push(
+                (1..=RANGE).map(|j| Pos::at(i, j).state(n as usize, true).as_lit()).collect::<Vec<_>>()
+            );
+        }
+        // columns
+        for j in 1..=RANGE {
+            rules.push(
+                (1..=RANGE).map(|i| Pos::at(i, j).state(n as usize, true).as_lit()).collect::<Vec<_>>()
+            );
+        }
+        // squares
+        for i in (0..bsize).map(|k| k * bsize + 1) {
+            for j in (0..bsize).map(|k| k * bsize + 1) {
+                let base = Pos::at(i, j);
+                let mut temp = Vec::new();
+                for offset in &block_walk {
+                    if let Some(p) = (base + *offset).valid(25) {
+                        temp.push(p.state(n as usize, true).as_lit());
+                    }
+                }
+                rules.push(temp);
+            }
+        }
+    }
+    rules
+}
+
 pub fn sudoku_row() -> Rules {
     let mut rules = Vec::new();
     for i in 1..=RANGE {
