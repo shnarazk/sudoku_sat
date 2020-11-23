@@ -16,8 +16,7 @@ pub fn main() {
         .map(|(p, d)| p.state(*d, true).as_lit())
         .collect::<Vec<_>>();
     // println!("#rules: {}", rules.len()); // println!("{:?}", &rules[1..20]);
-    dump_as_cnf(&rules, &setting);
-    return;
+    // dump_as_cnf(&rules, &setting);
     let mut config = Config::default();
     config.splr_interface = true;
     config.quiet_mode = false;
