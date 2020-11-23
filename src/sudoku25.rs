@@ -34,6 +34,16 @@ pub fn sudoku_row() -> Rules {
                     rules.push(p.state(d, true).requires(q.state(d, false)));
                 }
             }
+            for n in 1..=RANGE {
+                let mut rule = Vec::new();
+                for jj in 1..RANGE {
+                    if jj != j {
+                        rule.push(Pos::at(i, jj).state(n as usize, false).as_lit());
+                    }
+                }
+                rule.push(Pos::at(i, j).state(n as usize, true).as_lit());
+                rules.push(rule);
+            }
         }
     }
     rules
@@ -49,6 +59,16 @@ pub fn sudoku_column() -> Rules {
                 for d in 1..=(RANGE as usize) {
                     rules.push(p.state(d, true).requires(q.state(d, false)));
                 }
+            }
+            for n in 1..=RANGE {
+                let mut rule = Vec::new();
+                for ii in 1..RANGE {
+                    if ii != i {
+                        rule.push(Pos::at(ii, j).state(n as usize, false).as_lit());
+                    }
+                }
+                rule.push(Pos::at(i, j).state(n as usize, true).as_lit());
+                rules.push(rule);
             }
         }
     }
@@ -75,6 +95,22 @@ pub fn sudoku_block() -> Rules {
                                 rules.push(p.state(d, true).requires(q.state(d, false)));
                             }
                         }
+                    }
+                }
+            }
+            for tail in 0..block_walk.len() {
+                if let Some(p) = (base + block_walk[tail]).valid(25) {
+                    for n in 1..=RANGE {
+                        let mut rule = Vec::new();
+                        for offset in &block_walk {
+                            if let Some(q) = (base + *offset).valid(25) {
+                                if p != q {
+                                    rule.push(q.state(n as usize, false).as_lit());
+                                }
+                            }
+                        }
+                        rule.push(p.state(n as usize, true).as_lit());
+                        rules.push(rule);
                     }
                 }
             }
