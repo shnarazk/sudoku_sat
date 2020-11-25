@@ -70,7 +70,6 @@ pub fn sudoku_ident2() -> Rules {
 }
 
 /// 1. In Each row, each number should be assgined at most once.
-/// 2. So (N -1) negative assginment in a row should be a trigger to assgin the remaining var positively.
 pub fn sudoku_row() -> Rules {
     let mut rules = Vec::new();
     for i in 1..=RANGE {
@@ -82,23 +81,12 @@ pub fn sudoku_row() -> Rules {
                     rules.push(p.state(d, true).requires(q.state(d, false)));
                 }
             }
-            for n in 1..=RANGE {
-                let mut rule = Vec::new();
-                for jj in 1..RANGE {
-                    if jj != j {
-                        rule.push(Pos::at(i, jj).state(n as usize, false).as_lit());
-                    }
-                }
-                rule.push(Pos::at(i, j).state(n as usize, true).as_lit());
-                rules.push(rule);
-            }
         }
     }
     rules
 }
 
 /// 1. In Each column, each number should be assgined at most once.
-/// 2. So (N -1) negative assginment in a column should be a trigger to assgin the remaining var positively.
 pub fn sudoku_column() -> Rules {
     let mut rules = Vec::new();
     for j in 1..=RANGE {
@@ -110,23 +98,12 @@ pub fn sudoku_column() -> Rules {
                     rules.push(p.state(d, true).requires(q.state(d, false)));
                 }
             }
-            for n in 1..=RANGE {
-                let mut rule = Vec::new();
-                for ii in 1..RANGE {
-                    if ii != i {
-                        rule.push(Pos::at(ii, j).state(n as usize, false).as_lit());
-                    }
-                }
-                rule.push(Pos::at(i, j).state(n as usize, true).as_lit());
-                rules.push(rule);
-            }
         }
     }
     rules
 }
 
 /// 1. In Each square block, each number should be assgined at most once.
-/// 2. So (N -1) negative assginment in a block should be a trigger to assgin the remaining var positively.
 pub fn sudoku_block() -> Rules {
     let bsize = (RANGE as f64).sqrt() as isize;
     let mut rules = Vec::new();
@@ -147,22 +124,6 @@ pub fn sudoku_block() -> Rules {
                                 rules.push(p.state(d, true).requires(q.state(d, false)));
                             }
                         }
-                    }
-                }
-            }
-            for tail in 0..block_walk.len() {
-                if let Some(p) = (base + block_walk[tail]).valid(25) {
-                    for n in 1..=RANGE {
-                        let mut rule = Vec::new();
-                        for offset in &block_walk {
-                            if let Some(q) = (base + *offset).valid(25) {
-                                if p != q {
-                                    rule.push(q.state(n as usize, false).as_lit());
-                                }
-                            }
-                        }
-                        rule.push(p.state(n as usize, true).as_lit());
-                        rules.push(rule);
                     }
                 }
             }
