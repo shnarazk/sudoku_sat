@@ -1,5 +1,7 @@
 use crate::{pos::*, Rules, RANGE};
 
+/// 1. At least one number sholud be assigned on each cell.
+/// 2. So a positive assginment should be a trigger to assgin the rest vars negatively.
 pub fn sudoku_ident() -> Rules {
     let mut rules = Vec::new();
     for i in 1..=RANGE {
@@ -23,6 +25,7 @@ pub fn sudoku_ident() -> Rules {
     rules
 }
 
+/// 1. At least each number should be assigned on each group once.
 pub fn sudoku_ident2() -> Rules {
     let mut rules = Vec::new();
 
@@ -66,6 +69,8 @@ pub fn sudoku_ident2() -> Rules {
     rules
 }
 
+/// 1. In Each row, each number should be assgined at most once.
+/// 2. So (N -1) negative assginment in a row should be a trigger to assgin the remaining var positively.
 pub fn sudoku_row() -> Rules {
     let mut rules = Vec::new();
     for i in 1..=RANGE {
@@ -92,6 +97,8 @@ pub fn sudoku_row() -> Rules {
     rules
 }
 
+/// 1. In Each column, each number should be assgined at most once.
+/// 2. So (N -1) negative assginment in a column should be a trigger to assgin the remaining var positively.
 pub fn sudoku_column() -> Rules {
     let mut rules = Vec::new();
     for j in 1..=RANGE {
@@ -118,6 +125,8 @@ pub fn sudoku_column() -> Rules {
     rules
 }
 
+/// 1. In Each square block, each number should be assgined at most once.
+/// 2. So (N -1) negative assginment in a block should be a trigger to assgin the remaining var positively.
 pub fn sudoku_block() -> Rules {
     let bsize = (RANGE as f64).sqrt() as isize;
     let mut rules = Vec::new();
