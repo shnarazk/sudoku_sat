@@ -15,8 +15,8 @@ pub fn main() {
         .iter()
         .map(|(p, d)| p.state(*d, true).as_lit())
         .collect::<Vec<_>>();
-    // println!("#rules: {}", rules.len()); // println!("{:?}", &rules[1..20]);
-    // dump_as_cnf(&rules, &setting);
+    // miracle_sudoku::cnf::dump_as_cnf(&rules, &setting);
+    println!("#rules: {}", rules.len()); // println!("{:?}", &rules[1..20]);
     let mut config = Config::default();
     config.splr_interface = true;
     config.quiet_mode = false;
