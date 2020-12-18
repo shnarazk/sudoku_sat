@@ -1,10 +1,12 @@
 use {
-    miracle_sudoku::{cell::*, pos::*, sudoku25::*, Rules, RANGE},
+    miracle_sudoku::{cell::*, pos::*, sudoku::*, Rules, set_range},
     splr::*,
     std::{convert::TryFrom, io::Write, fs::File},
 };
 
 pub fn main() {
+    let range = 25;
+    set_range(range);
     let mut rules: Rules = Vec::new();
     rules.append(&mut sudoku_ident());
     rules.append(&mut sudoku_ident2());
@@ -30,9 +32,9 @@ pub fn main() {
         println!("found!");
         let mut picked = ans.iter().filter(|l| 0 < **l).collect::<Vec<&i32>>();
         // println!("{}: {:?}", ans.len(), picked);
-        assert_eq!((RANGE * RANGE) as usize, picked.len());
-        for _i in 1..=RANGE {
-            for _j in 1..=RANGE {
+        assert_eq!((range * range) as usize, picked.len());
+        for _i in 1..=range {
+            for _j in 1..=range {
                 let (_i, _j, d, _b) = Cell::decode(*picked.remove(0));
                 print!("{:>2} ", d);
             }

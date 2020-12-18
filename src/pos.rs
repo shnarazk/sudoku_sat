@@ -1,5 +1,5 @@
 use {
-    crate::{cell::Cell, RANGE},
+    crate::{cell::Cell, get_range},
     std::{
         iter::Iterator,
         ops::{Add, Neg},
@@ -45,8 +45,9 @@ pub struct Neighbors<'a> {
 impl<'a> Iterator for Neighbors<'a> {
     type Item = Pos;
     fn next(&mut self) -> Option<Self::Item> {
+        let range = get_range();
         for i in self.index..self.around.len() {
-            if let Some(res) = (self.base + self.around[i]).valid(RANGE) {
+            if let Some(res) = (self.base + self.around[i]).valid(range) {
                 self.index = i + 1;
                 return Some(res);
             }
@@ -79,7 +80,8 @@ impl Pos {
     }
     /// return literal for a digit at (i, j).
     pub fn to_lit(&self, digit: usize, on: bool) -> i32 {
-        let var = (self.j - 1) * RANGE * RANGE + (self.i - 1) * RANGE + ((digit - 1) as isize) + 1;
+        let range = get_range();
+        let var = (self.j - 1) * range * range + (self.i - 1) * range + ((digit - 1) as isize) + 1;
         if on {
             var as i32
         } else {
@@ -102,7 +104,9 @@ mod tests {
 
     #[test]
     fn test_around() {
-        assert_eq!(RANGE, 25);
+        set_range(25);
+        let range = get_range();
+        assert_eq!(range, 25);
         let kings_moves = vec![
             Pos::at(-1, 0),
             Pos::at(-1, 1),

@@ -1,10 +1,12 @@
 use {
-    miracle_sudoku::{cell::*, miracle::*, pos::*, Rules, RANGE},
+    miracle_sudoku::{cell::*, miracle::*, pos::*, Rules, set_range},
     splr::*,
     std::convert::TryFrom,
 };
 
 pub fn main() {
+    let range = 9;
+    set_range(range);
     let mut rules = sudoku_rules();
     rules.append(&mut miracle_knights());
     rules.append(&mut miracle_kings());
@@ -27,9 +29,9 @@ pub fn main() {
     }
     for ans in solver.iter().take(8) {
         let mut picked = ans.iter().filter(|l| 0 < **l).collect::<Vec<&i32>>();
-        assert_eq!((RANGE * RANGE) as usize, picked.len());
-        for _i in 1..=RANGE {
-            for _j in 1..=RANGE {
+        assert_eq!((range * range) as usize, picked.len());
+        for _i in 1..=range {
+            for _j in 1..=range {
                 let (_i, _j, d, _b) = Cell::decode(*picked.remove(0));
                 print!("{:?} ", d);
             }
@@ -40,9 +42,10 @@ pub fn main() {
 }
 
 fn sudoku_rules() -> Rules {
+    let range = 9;
     let mut rules = Vec::new();
-    for i in 1..=RANGE {
-        for j in 1..=RANGE {
+    for i in 1..=range {
+        for j in 1..=range {
             let p = Pos::at(i, j);
             //
             // at-least single assignments
@@ -61,8 +64,8 @@ fn sudoku_rules() -> Rules {
             //
             // at-most single assignments
             //
-            for d in 1..=RANGE as usize {
-                for target_d in d + 1..=RANGE as usize {
+            for d in 1..=range as usize {
+                for target_d in d + 1..=range as usize {
                     rules.push(p.state(d, true).requires(p.state(target_d, false)));
                 }
             }
@@ -70,9 +73,9 @@ fn sudoku_rules() -> Rules {
             // constraints over the row
             //
             let target_i = i;
-            for target_j in j + 1..=RANGE {
+            for target_j in j + 1..=range {
                 let t = Pos::at(target_i, target_j);
-                for d in 1..=RANGE as usize {
+                for d in 1..=range as usize {
                     rules.push(p.state(d, true).requires(t.state(d, false)));
                 }
             }
@@ -80,9 +83,9 @@ fn sudoku_rules() -> Rules {
             // constraints over the column
             //
             let target_j = j;
-            for target_i in i + 1..=RANGE {
+            for target_i in i + 1..=range {
                 let t = Pos::at(target_i, target_j);
-                for d in 1..=RANGE as usize {
+                for d in 1..=range as usize {
                     rules.push(p.state(d, true).requires(t.state(d, false)));
                 }
             }
@@ -93,7 +96,7 @@ fn sudoku_rules() -> Rules {
                 for target_j in j..=((j - 1) / 3 + 1) * 3 {
                     let t = Pos::at(target_i, target_j);
                     if p != t {
-                        for d in 1..=RANGE as usize {
+                        for d in 1..=range as usize {
                             rules.push(p.state(d, true).requires(t.state(d, false)));
                         }
                     }

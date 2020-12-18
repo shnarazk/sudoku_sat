@@ -1,5 +1,6 @@
 use {crate::Rules, std::io::Write};
 
+#[allow(clippy::ptr_arg)]
 pub fn dump_as_cnf(rules: &Rules, assigns: &[i32]) {
     let num_cls = rules.len();
     let num_var = rules
@@ -19,6 +20,7 @@ pub fn dump_as_cnf(rules: &Rules, assigns: &[i32]) {
     }
 }
 
+#[allow(clippy::ptr_arg)]
 pub fn as_cnf_u8(rules: &Rules, assigns: &[i32]) -> Vec<u8> {
     let mut result: Vec<u8> = Vec::new();
     let num_cls = rules.len();

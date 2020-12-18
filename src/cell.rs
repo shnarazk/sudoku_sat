@@ -1,5 +1,5 @@
 use {
-    crate::{pos::Pos, RANGE},
+    crate::{pos::Pos, get_range},
     std::ops::Neg,
 };
 
@@ -13,20 +13,27 @@ pub struct Cell {
 impl Cell {
     /// convert a state to Splr's literal
     pub fn as_lit(&self) -> i32 {
+        let range = get_range();
         let Cell {
             pos: Pos { i, j },
             digit: d,
             on: b,
         } = *self;
         assert!(1 <= i);
-        assert!(i <= RANGE);
+        assert!(i <= range);
         assert!(1 <= j);
-        assert!(j <= RANGE);
+        if range < j {
+            panic!("range: {}, j: {}", range, j);
+        }
+        assert!(j <= range);
         assert!(1 <= d);
-        assert!(d <= RANGE as usize);
-        let var = (i - 1) * RANGE * RANGE + (j - 1) * RANGE + ((d - 1) as isize) + 1;
+        if (range as usize) < d {
+            panic!("range: {}, d: {}", range, d);
+        }
+        assert!(d <= (range as usize));
+        let var = (i - 1) * range * range + (j - 1) * range + ((d - 1) as isize) + 1;
         // dbg!(var);
-        assert!(var.abs() <= RANGE.pow(3));
+        assert!(var.abs() <= range.pow(3));
         if b {
             var as i32
         } else {
@@ -39,10 +46,11 @@ impl Cell {
     }
     /// decode an assignment returned by Splr to `(i, j, digit, flag)`
     pub fn decode(a: i32) -> (isize, isize, usize, bool) {
+        let range = get_range();
         (
-            (a as isize - 1) / (RANGE * RANGE) + 1,
-            (a as isize - 1) / RANGE % RANGE + 1,
-            (a as usize - 1) % (RANGE as usize) + 1,
+            (a as isize - 1) / (range * range) + 1,
+            (a as isize - 1) / range % range + 1,
+            (a as usize - 1) % (range as usize) + 1,
             0 < a,
         )
     }
