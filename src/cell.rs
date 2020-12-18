@@ -1,5 +1,5 @@
 use {
-    crate::{pos::Pos, get_range},
+    crate::{get_range, pos::Pos},
     std::ops::Neg,
 };
 

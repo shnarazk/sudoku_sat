@@ -29,7 +29,9 @@ pub fn as_cnf_u8(rules: &Rules, assigns: &[i32]) -> Vec<u8> {
         .map(|v| v.iter().map(|v| v.abs() as usize).max().unwrap_or(0))
         .max()
         .unwrap_or(0);
-    result.write_all(format!("p cnf {} {}\n", num_var, num_cls + assigns.len()).as_bytes()).unwrap();
+    result
+        .write_all(format!("p cnf {} {}\n", num_var, num_cls + assigns.len()).as_bytes())
+        .unwrap();
     for cls in rules.iter() {
         for l in cls.iter() {
             result.write_all(format!("{} ", *l).as_bytes()).unwrap();
@@ -37,7 +39,9 @@ pub fn as_cnf_u8(rules: &Rules, assigns: &[i32]) -> Vec<u8> {
         result.write_all(b"0\n").unwrap();
     }
     for asg in assigns.iter() {
-        result.write_all(format!("{} 0\n", *asg).as_bytes()).unwrap();
+        result
+            .write_all(format!("{} 0\n", *asg).as_bytes())
+            .unwrap();
     }
     result
 }

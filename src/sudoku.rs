@@ -1,4 +1,4 @@
-use crate::{pos::*, Rules, get_range};
+use crate::{get_range, pos::*, Rules};
 
 /// 1. At least one number sholud be assigned on each cell.
 /// 2. So a positive assginment should be a trigger to assgin the rest vars negatively.
@@ -45,13 +45,17 @@ pub fn sudoku_ident2() -> Rules {
         // rows
         for i in 1..=range {
             rules.push(
-                (1..=range).map(|j| Pos::at(i, j).state(n as usize, true).as_lit()).collect::<Vec<_>>()
+                (1..=range)
+                    .map(|j| Pos::at(i, j).state(n as usize, true).as_lit())
+                    .collect::<Vec<_>>(),
             );
         }
         // columns
         for j in 1..=range {
             rules.push(
-                (1..=range).map(|i| Pos::at(i, j).state(n as usize, true).as_lit()).collect::<Vec<_>>()
+                (1..=range)
+                    .map(|i| Pos::at(i, j).state(n as usize, true).as_lit())
+                    .collect::<Vec<_>>(),
             );
         }
         // squares

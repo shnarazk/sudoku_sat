@@ -1,7 +1,7 @@
 use {
-    miracle_sudoku::{cell::*, pos::*, sudoku::*, Rules, set_range},
+    miracle_sudoku::{cell::*, pos::*, set_range, sudoku::*, Rules},
     splr::*,
-    std::{convert::TryFrom, io::Write, fs::File},
+    std::{convert::TryFrom, fs::File, io::Write},
 };
 
 pub fn main() {
@@ -18,7 +18,8 @@ pub fn main() {
         .map(|(p, d)| p.state(*d, true).as_lit())
         .collect::<Vec<_>>();
     let mut file = File::create("sudoku25.cnf").expect("fail to create 'sudoku25.cnf'");
-    file.write_all(&miracle_sudoku::cnf::as_cnf_u8(&rules, &setting)).expect("fail to write 'sudoku25.cnf'");
+    file.write_all(&miracle_sudoku::cnf::as_cnf_u8(&rules, &setting))
+        .expect("fail to write 'sudoku25.cnf'");
     println!("#rules: {}", rules.len()); // println!("{:?}", &rules[1..20]);
     let mut config = Config::default();
     config.splr_interface = true;

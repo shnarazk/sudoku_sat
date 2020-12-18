@@ -1,4 +1,4 @@
-use crate::{pos::*, Rules, get_range};
+use crate::{get_range, pos::*, Rules};
 
 pub fn miracle_knights() -> Rules {
     let knights_moves = [
