@@ -47,7 +47,7 @@ pub fn main() {
 
 fn parse(tick: usize) -> Vec<(Pos, usize)> {
     let mut buf = String::new();
-    std::io::stdin().read_to_string(&mut buf);
+    std::io::stdin().read_to_string(&mut buf).expect("fail to read");
     let mut vec: Vec<(Pos, usize)> = Vec::new();
     let mut i = 0;
     for (ii, l) in buf.lines().enumerate() {
