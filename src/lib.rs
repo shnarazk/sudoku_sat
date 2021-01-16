@@ -14,6 +14,10 @@ pub fn get_range() -> isize {
     RANGE.load(Ordering::Relaxed)
 }
 
+pub fn get_block_len() -> isize {
+    (RANGE.load(Ordering::Relaxed) as f64).sqrt() as isize
+}
+
 pub fn set_range(val: isize) {
     RANGE.store(val, Ordering::Relaxed);
 }
