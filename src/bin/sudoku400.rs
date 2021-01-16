@@ -7,16 +7,18 @@ use {
 pub fn main() {
     let range = 400;
     set_range(range);
-    let setting: Vec<i32> = parse(20)
+    let constraints: Vec<(Pos, usize)> = parse(20);
+    let setting: Vec<i32> = constraints
         .iter()
         .map(|(p, d)| p.state(*d, true).as_lit())
         .collect::<Vec<_>>();
+    dbg!(constraints.len());
     let mut rules: Rules = Vec::new();
-    rules.append(&mut sudoku_ident());
-    rules.append(&mut sudoku_ident2());
-    rules.append(&mut sudoku_row());
-    rules.append(&mut sudoku_column());
-    rules.append(&mut sudoku_block());
+    rules.append(&mut sudoku_ident(&constraints));
+    // rules.append(&mut sudoku_ident2());
+    // rules.append(&mut sudoku_row(&constraints));
+    // rules.append(&mut sudoku_column(&constraints));
+    // rules.append(&mut sudoku_block(&constraints));
     let mut file = File::create("sudoku400.cnf").expect("fail to create 'sudoku400.cnf'");
     file.write_all(&miracle_sudoku::cnf::as_cnf_u8(&rules, &setting))
         .expect("fail to write 'sudoku400.cnf'");
@@ -47,7 +49,9 @@ pub fn main() {
 
 fn parse(tick: usize) -> Vec<(Pos, usize)> {
     let mut buf = String::new();
-    std::io::stdin().read_to_string(&mut buf).expect("fail to read");
+    std::io::stdin()
+        .read_to_string(&mut buf)
+        .expect("fail to read");
     let mut vec: Vec<(Pos, usize)> = Vec::new();
     let mut i = 0;
     for (ii, l) in buf.lines().enumerate() {
@@ -69,7 +73,6 @@ fn parse(tick: usize) -> Vec<(Pos, usize)> {
                     } else {
                         dbg!(w);
                     }
-
                 }
             }
         }

@@ -9,19 +9,20 @@ pub fn main() {
     set_range(64);
     assert_eq!(get_range(), range);
     let mut rules: Rules = Vec::new();
-    rules.append(&mut sudoku_ident());
-    rules.append(&mut sudoku_ident2());
-    rules.append(&mut sudoku_row());
-    rules.append(&mut sudoku_column());
-    rules.append(&mut sudoku_block());
-    // csv_sudoku();
     let (conf, mut dic) = parse_sudoku();
+    rules.append(&mut sudoku_ident(&conf));
+    rules.append(&mut sudoku_ident2());
+    rules.append(&mut sudoku_row(&conf));
+    rules.append(&mut sudoku_column(&conf));
+    rules.append(&mut sudoku_block(&conf));
+    rules.append(&mut sudoku_preset(&conf));
+    // csv_sudoku();
     let setting: Vec<i32> = conf
         .iter()
         .map(|(p, d)| p.state(*d, true).as_lit())
         .collect::<Vec<_>>();
     let mut file = File::create("sudoku64.cnf").expect("fail to create 'sudoku64.cnf'");
-    file.write_all(&miracle_sudoku::cnf::as_cnf_u8(&rules, &setting))
+    file.write_all(&miracle_sudoku::cnf::as_cnf_u8(&rules, &vec![]))
         .expect("fail to write 'sudoku64.cnf'");
     println!("#rules: {}", rules.len());
     let mut config = Config::default();
@@ -176,6 +177,7 @@ fn parse_sudoku() -> (Vec<(Pos, usize)>, HashMap<usize, char>) {
     (vec, pull_back)
 }
 
+#[allow(dead_code)]
 fn csv_sudoku() {
     for l in SUDOKU.lines() {
         for c in l.chars() {

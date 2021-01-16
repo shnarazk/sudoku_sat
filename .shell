@@ -1,0 +1,1 @@
+cargo run --bin sudoku400 --release < hn_singles400x400.txt

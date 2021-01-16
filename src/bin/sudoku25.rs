@@ -8,12 +8,14 @@ pub fn main() {
     let range = 25;
     set_range(range);
     let mut rules: Rules = Vec::new();
-    rules.append(&mut sudoku_ident());
+    let conf: Vec<(Pos, usize)> = parse_s25();
+    rules.append(&mut sudoku_ident(&conf));
     rules.append(&mut sudoku_ident2());
-    rules.append(&mut sudoku_row());
-    rules.append(&mut sudoku_column());
-    rules.append(&mut sudoku_block());
-    let setting: Vec<i32> = parse_s25()
+    rules.append(&mut sudoku_row(&conf));
+    rules.append(&mut sudoku_column(&conf));
+    rules.append(&mut sudoku_block(&conf));
+    rules.append(&mut sudoku_preset(&conf));
+    let setting: Vec<i32> = conf
         .iter()
         .map(|(p, d)| p.state(*d, true).as_lit())
         .collect::<Vec<_>>();

@@ -1,20 +1,51 @@
 use crate::{get_range, pos::*, Rules};
 
+fn collect_digits(fixed: &[(Pos, usize)], p: Pos) -> Vec<usize> {
+    if fixed.iter().find(|r| p == r.0).is_some() {
+        fixed
+            .iter()
+            .filter(|(q, _)| *q != p && (p.i == q.i || p.j == q.j))
+            .map(|r| r.1)
+            .collect::<Vec<usize>>()
+    } else {
+        vec![]
+    }
+}
+
+pub fn sudoku_preset(fixed: &[(Pos, usize)]) -> Rules {
+    let range = get_range();
+    let mut rules = Vec::new();
+    for (p, d) in fixed.iter() {
+        for dd in 1..=range as usize {
+            rules.push(vec![p.state(dd, *d == dd).as_lit()]);
+        }
+    }
+    rules
+}
+
 /// 1. At least one number sholud be assigned on each cell.
 /// 2. So a positive assginment should be a trigger to assgin the rest vars negatively.
-pub fn sudoku_ident() -> Rules {
+/// O(n^4)
+pub fn sudoku_ident(fixed: &[(Pos, usize)]) -> Rules {
     let range = get_range();
     let mut rules = Vec::new();
     for i in 1..=range {
         for j in 1..=range {
             let p = Pos::at(i, j);
+            if fixed.iter().any(|r| p == r.0) {
+                continue;
+            }
             // at-least constraints
             let v = (1..=(range as usize))
                 .map(|d| p.state(d, true).as_lit())
                 .collect::<Vec<_>>();
             rules.push(v);
             // at-most constraints
+            let presets = collect_digits(fixed, p);
             for d in 1..=(range as usize) {
+                if presets.contains(&d) {
+                    continue;
+                }
                 for dd in 1..(range as usize) {
                     if d != dd {
                         rules.push(p.state(d, true).requires(p.state(dd, false)));
@@ -27,6 +58,7 @@ pub fn sudoku_ident() -> Rules {
 }
 
 /// 1. At least each number should be assigned on each group once.
+/// O(n^2)
 pub fn sudoku_ident2() -> Rules {
     let range = get_range();
     let mut rules = Vec::new();
@@ -76,7 +108,8 @@ pub fn sudoku_ident2() -> Rules {
 }
 
 /// 1. In Each row, each number should be assgined at most once.
-pub fn sudoku_row() -> Rules {
+/// O(n^4)
+pub fn sudoku_row(fixed: &[(Pos, usize)]) -> Rules {
     let range = get_range();
     let mut rules = Vec::new();
     for i in 1..=range {
@@ -84,8 +117,16 @@ pub fn sudoku_row() -> Rules {
             let p = Pos::at(i, j);
             for jj in j + 1..=range {
                 let q = Pos::at(i, jj);
-                for d in 1..=(range as usize) {
-                    rules.push(p.state(d, true).requires(q.state(d, false)));
+                if fixed.iter().any(|r| p == r.0) && fixed.iter().any(|r| q == r.0) {
+                    continue;
+                } else if let Some((_, d)) = fixed.iter().find(|r| p == r.0) {
+                    rules.push(vec![q.state(*d, false).as_lit()]);
+                } else if let Some((_, d)) = fixed.iter().find(|r| q == r.0) {
+                    rules.push(vec![p.state(*d, false).as_lit()]);
+                } else {
+                    for d in 1..=(range as usize) {
+                        rules.push(p.state(d, true).requires(q.state(d, false)));
+                    }
                 }
             }
         }
@@ -94,7 +135,8 @@ pub fn sudoku_row() -> Rules {
 }
 
 /// 1. In Each column, each number should be assgined at most once.
-pub fn sudoku_column() -> Rules {
+/// O(n^4)
+pub fn sudoku_column(fixed: &[(Pos, usize)]) -> Rules {
     let range = get_range();
     let mut rules = Vec::new();
     for j in 1..=range {
@@ -102,8 +144,16 @@ pub fn sudoku_column() -> Rules {
             let p = Pos::at(i, j);
             for ii in i + 1..=range {
                 let q = Pos::at(ii, j);
-                for d in 1..=(range as usize) {
-                    rules.push(p.state(d, true).requires(q.state(d, false)));
+                if fixed.iter().any(|r| p == r.0) && fixed.iter().any(|r| q == r.0) {
+                    continue;
+                } else if let Some((_, d)) = fixed.iter().find(|r| p == r.0) {
+                    rules.push(vec![q.state(*d, false).as_lit()]);
+                } else if let Some((_, d)) = fixed.iter().find(|r| q == r.0) {
+                    rules.push(vec![p.state(*d, false).as_lit()]);
+                } else {
+                    for d in 1..=(range as usize) {
+                        rules.push(p.state(d, true).requires(q.state(d, false)));
+                    }
                 }
             }
         }
@@ -112,7 +162,8 @@ pub fn sudoku_column() -> Rules {
 }
 
 /// 1. In Each square block, each number should be assgined at most once.
-pub fn sudoku_block() -> Rules {
+/// O(n^4)
+pub fn sudoku_block(fixed: &[(Pos, usize)]) -> Rules {
     let range = get_range();
     let bsize = (range as f64).sqrt() as isize;
     let mut rules = Vec::new();
@@ -129,8 +180,16 @@ pub fn sudoku_block() -> Rules {
                 if let Some(p) = (base + block_walk[tail]).valid(range) {
                     for offset in &block_walk[tail + 1..] {
                         if let Some(q) = (base + *offset).valid(range) {
-                            for d in 1..=(range as usize) {
-                                rules.push(p.state(d, true).requires(q.state(d, false)));
+                            if fixed.iter().any(|r| p == r.0) && fixed.iter().any(|r| q == r.0) {
+                                continue;
+                            } else if let Some((_, d)) = fixed.iter().find(|r| p == r.0) {
+                                rules.push(vec![q.state(*d, false).as_lit()]);
+                            } else if let Some((_, d)) = fixed.iter().find(|r| q == r.0) {
+                                rules.push(vec![p.state(*d, false).as_lit()]);
+                            } else {
+                                for d in 1..=(range as usize) {
+                                    rules.push(p.state(d, true).requires(q.state(d, false)));
+                                }
                             }
                         }
                     }
