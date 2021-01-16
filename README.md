@@ -1,8 +1,33 @@
-# Miracle Sudoku
+# Solve Sudoku variants with SAT solvers
+
+## Sudoku 400x400
+
+Gave up! 
+- https://github.com/hkociemba/sudokuNxM/tree/master/sudokus
+- http://forum.enjoysudoku.com/giant-sudoku-s-16x16-25x25-36x36-100x100-t6578-150.html#p269691
+
+## Sudoku 144x144
+
+- https://github.com/shnarazk/sudoku_sat/discussions/4#discussioncomment-283483
+
+## Sudoku 100x100
+
+- https://github.com/shnarazk/sudoku_sat/discussions/4
+
+## Sudoku 64
+
+https://shnarazk.github.io/2020/2020-12-18-sudoku64/
+
+## Sudoku 25
+
+https://shnarazk.github.io/2020/2020-08-19-sudoku25/
+
+
+## Miracle Sudoku
 
 https://www.youtube.com/watch?v=cvEq_XkQg8U
 
-## Approach
+### Approach
 
 1. Preparation
 
@@ -33,7 +58,7 @@ for i in 1..=RANGE {
 
 4. Run SAT solver
 
-# Result, the only one result
+### Result, the only one result
 
 ```plain
 $ cargo run --release
@@ -55,7 +80,7 @@ $
 
 ![](https://user-images.githubusercontent.com/997855/83323585-d5920000-a29a-11ea-9635-d5ac4bd152fa.png)
 
-# Stats
+### Stats
 
 ```plain
 $ tokei
