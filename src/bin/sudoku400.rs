@@ -15,10 +15,10 @@ pub fn main() {
     dbg!(constraints.len());
     let mut rules: Rules = Vec::new();
     rules.append(&mut sudoku_ident(&constraints));
-    // rules.append(&mut sudoku_ident2());
-    // rules.append(&mut sudoku_row(&constraints));
-    // rules.append(&mut sudoku_column(&constraints));
-    // rules.append(&mut sudoku_block(&constraints));
+    rules.append(&mut sudoku_ident2());
+    rules.append(&mut sudoku_row(&constraints));
+    rules.append(&mut sudoku_column(&constraints));
+    rules.append(&mut sudoku_block(&constraints));
     let mut file = File::create("sudoku400.cnf").expect("fail to create 'sudoku400.cnf'");
     file.write_all(&miracle_sudoku::cnf::as_cnf_u8(&rules, &setting))
         .expect("fail to write 'sudoku400.cnf'");
@@ -31,20 +31,25 @@ pub fn main() {
         solver.add_assignment(*a).expect("panic");
     }
     println!("running...");
+    let mut answer: Vec<Vec<usize>> = Vec::new();
     for ans in solver.iter().take(1) {
         println!("found!");
         let mut picked = ans.iter().filter(|l| 0 < **l).collect::<Vec<&i32>>();
         // println!("{}: {:?}", ans.len(), picked);
         assert_eq!((range * range) as usize, picked.len());
         for _i in 1..=range {
+            let mut line: Vec<usize> = Vec::new();
             for _j in 1..=range {
                 let (_i, _j, d, _b) = Cell::decode(*picked.remove(0));
+                line.push(d);
                 print!("{:>2} ", d);
             }
+            answer.push(line);
             println!();
         }
         println!();
     }
+    println!("verified {}", veried(&answer));
 }
 
 fn parse(tick: usize) -> Vec<(Pos, usize)> {
