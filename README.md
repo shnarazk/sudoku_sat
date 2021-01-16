@@ -2,11 +2,13 @@
 
 ## Sudoku 400x400
 
-Gave up! 
+under consruction
 - https://github.com/hkociemba/sudokuNxM/tree/master/sudokus
 - http://forum.enjoysudoku.com/giant-sudoku-s-16x16-25x25-36x36-100x100-t6578-150.html#p269691
 
 ## Sudoku 144x144
+
+Solved.
 
 - https://github.com/shnarazk/sudoku_sat/discussions/4#discussioncomment-283483
 
@@ -17,16 +19,19 @@ Gave up!
 
 ## Sudoku 64
 
-https://shnarazk.github.io/2020/2020-12-18-sudoku64/
+Solved.
+- https://shnarazk.github.io/2020/2020-12-18-sudoku64/
 
 ## Sudoku 25
 
-https://shnarazk.github.io/2020/2020-08-19-sudoku25/
+Solved.
+- https://shnarazk.github.io/2020/2020-08-19-sudoku25/
 
 
 ## Miracle Sudoku
 
-https://www.youtube.com/watch?v=cvEq_XkQg8U
+Solved.
+- https://www.youtube.com/watch?v=cvEq_XkQg8U
 
 ### Approach
 
