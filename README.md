@@ -13,6 +13,7 @@ Gave up!
 ## Sudoku 100x100
 
 - https://github.com/shnarazk/sudoku_sat/discussions/4
+- [Reducing the space](https://github.com/shnarazk/sudoku_sat/commit/361c4a9d44c9b413dd6f9a1a87a5cb8c3a929344)
 
 ## Sudoku 64
 
