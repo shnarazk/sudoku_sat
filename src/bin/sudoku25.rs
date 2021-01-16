@@ -31,20 +31,26 @@ pub fn main() {
         solver.add_assignment(*a).expect("panic");
     }
     println!("running...");
+    let mut answer: Vec<Vec<usize>> = Vec::new();
     for ans in solver.iter().take(1) {
         println!("found!");
         let mut picked = ans.iter().filter(|l| 0 < **l).collect::<Vec<&i32>>();
         // println!("{}: {:?}", ans.len(), picked);
         assert_eq!((range * range) as usize, picked.len());
         for _i in 1..=range {
+            let mut line: Vec<usize> = Vec::new();
             for _j in 1..=range {
                 let (_i, _j, d, _b) = Cell::decode(*picked.remove(0));
+                line.push(d);
                 print!("{:>2} ", d);
             }
+            answer.push(line);
             println!();
         }
         println!();
     }
+    println!("verified {}", veried(&answer));
+    // dbg!(&answer);
 }
 
 const S25: &str = "

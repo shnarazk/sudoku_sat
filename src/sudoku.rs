@@ -1,15 +1,11 @@
-use crate::{get_range, pos::*, Rules};
+use crate::{get_block_len, get_range, pos::*, Rules};
 
-fn collect_digits(fixed: &[(Pos, usize)], p: Pos) -> Vec<usize> {
-    if fixed.iter().find(|r| p == r.0).is_some() {
-        fixed
-            .iter()
-            .filter(|(q, _)| *q != p && (p.i == q.i || p.j == q.j))
-            .map(|r| r.1)
-            .collect::<Vec<usize>>()
-    } else {
-        vec![]
-    }
+fn collect_digits(fixed: &[(Pos, usize)], p: Pos, blen: isize) -> Vec<usize> {
+    fixed
+        .iter()
+        .filter(|(q, _)| p.i == q.i || p.j == q.j || ((p.i - 1) / blen == (q.i - 1) / blen && (p.j - 1) / blen == (q.j - 1) / blen))
+        .map(|r| r.1)
+        .collect::<Vec<usize>>()
 }
 
 pub fn sudoku_preset(fixed: &[(Pos, usize)]) -> Rules {
@@ -198,4 +194,43 @@ pub fn sudoku_block(fixed: &[(Pos, usize)]) -> Rules {
         }
     }
     rules
+}
+
+pub fn veried(ans: &[Vec<usize>]) -> bool {
+    let range = get_range();
+    let blen = get_block_len() as usize;
+    let sorted = (1..=range as usize).collect::<Vec<usize>>();
+    for (i, line) in ans.iter().enumerate() {
+        let mut l = line.clone();
+        l.sort_unstable();
+        if l != sorted {
+            dbg!((i, l));
+            return false;
+        }
+    } 
+    for j in 0..range as usize {
+        let mut l = ans.iter().map(|l| l[j]).collect::<Vec<usize>>();
+        l.sort_unstable();
+        if l != sorted {
+            dbg!((j, l));
+            return false;
+        }
+    } 
+    for i in 0..blen as usize {
+        for j in 0..blen as usize {
+            let mut l = Vec::new();
+            for line in &ans[i*blen..(i+1)*blen] {
+                for jj in j*blen..(j+1)*blen {
+                    l.push(line[jj]);
+                }
+            }
+            assert_eq!(l.len(), range as usize);
+            l.sort_unstable();
+            if l != sorted {
+                dbg!((i, j));
+                return false;
+            }
+        }
+    }
+    true
 }
