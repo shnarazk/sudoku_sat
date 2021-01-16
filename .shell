@@ -1,1 +1,3 @@
 cargo run --bin sudoku400 --release < hn_singles400x400.txt
+cargo run --bin sudoku144 --release < sudoku144.txt
+cargo run --bin sudoku64 --release
