@@ -14,11 +14,18 @@ pub fn main() {
         .collect::<Vec<_>>();
     dbg!(constraints.len());
     let mut rules: Rules = Vec::new();
+    rules.append(&mut sudoku_preset(&constraints));
+    println!("preset");
     rules.append(&mut sudoku_ident(&constraints));
+    println!("ident");
     rules.append(&mut sudoku_ident2());
+    println!("ident2");
     rules.append(&mut sudoku_row(&constraints));
+    println!("row");
     rules.append(&mut sudoku_column(&constraints));
+    println!("column");
     rules.append(&mut sudoku_block(&constraints));
+    println!("block");
     let mut file = File::create("sudoku400.cnf").expect("fail to create 'sudoku400.cnf'");
     file.write_all(&miracle_sudoku::cnf::as_cnf_u8(&rules, &setting))
         .expect("fail to write 'sudoku400.cnf'");
@@ -74,6 +81,7 @@ fn parse(tick: usize) -> Vec<(Pos, usize)> {
                     j += 1;
                     let p = Pos::at(i as isize, j as isize);
                     if let Ok(d) = w.trim().parse::<usize>() {
+                        assert_ne!(d, 0);
                         vec.push((p, d));
                     } else {
                         dbg!(w);
