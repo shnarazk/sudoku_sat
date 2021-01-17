@@ -16,6 +16,7 @@ cd sudoku_sat
 cargo run --bin sudoku144 --release < sudoku144.txt
 ```
 
+- [Rust製のSATソルバーで144x144のSudokuを解こう(my blog entry in Japanese)](https://shnarazk.github.io/2021/2021-01-17-sudoku144/)
 - https://github.com/shnarazk/sudoku_sat/discussions/4#discussioncomment-283483
 
 ## Sudoku 100x100
@@ -33,12 +34,12 @@ cd sudoku_sat
 cargo run --bin sudoku64 --release
 ```
 
-- https://shnarazk.github.io/2020/2020-12-18-sudoku64/
+- [Rust製のSATソルバーで64x64のSudokuが解けるだろうか(my blog entry in Japanese)](https://shnarazk.github.io/2020/2020-12-18-sudoku64/)
 
 ## Sudoku 25
 
 Solved.
-- https://shnarazk.github.io/2020/2020-08-19-sudoku25/
+- [Rust製の「SATソルバーで25x25のナンプレが解けるだろうか」(my blog entry in Japanese)](https://shnarazk.github.io/2020/2020-08-19-sudoku25/)
 
 
 ```
