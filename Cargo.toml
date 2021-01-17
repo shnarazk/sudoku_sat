@@ -8,5 +8,5 @@ edition = "2018"
 
 [dependencies]
 lazy_static = "^1.4"
-splr = { version = "0.5.0", features = ["incremental_solver"] }
+splr = { version = "0.6.0", features = ["incremental_solver"] }
 
