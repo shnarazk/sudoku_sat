@@ -10,6 +10,12 @@ under consruction
 
 Solved.
 
+```
+git clone https://github.com/shnarazk/sudoku_sat.git
+cd sudoku_sat
+cargo run --bin sudoku144 --release < sudoku144.txt
+```
+
 - https://github.com/shnarazk/sudoku_sat/discussions/4#discussioncomment-283483
 
 ## Sudoku 100x100
@@ -20,6 +26,13 @@ Solved.
 ## Sudoku 64
 
 Solved.
+
+```
+git clone https://github.com/shnarazk/sudoku_sat.git
+cd sudoku_sat
+cargo run --bin sudoku64 --release
+```
+
 - https://shnarazk.github.io/2020/2020-12-18-sudoku64/
 
 ## Sudoku 25
@@ -28,10 +41,17 @@ Solved.
 - https://shnarazk.github.io/2020/2020-08-19-sudoku25/
 
 
+```
+git clone https://github.com/shnarazk/sudoku_sat.git
+cd sudoku_sat
+cargo run --bin sudoku25 --release
+```
+
 ## Miracle Sudoku
 
 Solved.
 - https://www.youtube.com/watch?v=cvEq_XkQg8U
+
 
 ### Approach
 
