@@ -8,5 +8,5 @@ default-run = "sudoku144"
 
 [dependencies]
 lazy_static = "^1.4"
-splr = { version = "^0.15", features = ["incremental_solver"] }
+splr = { version = "^0.17", features = ["incremental_solver"] }
 
