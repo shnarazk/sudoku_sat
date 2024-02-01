@@ -3,7 +3,11 @@ use crate::{get_block_len, get_range, pos::*, Rules};
 fn collect_digits(fixed: &[(Pos, usize)], p: Pos, blen: isize) -> Vec<usize> {
     fixed
         .iter()
-        .filter(|(q, _)| p.i == q.i || p.j == q.j || ((p.i - 1) / blen == (q.i - 1) / blen && (p.j - 1) / blen == (q.j - 1) / blen))
+        .filter(|(q, _)| {
+            p.i == q.i
+                || p.j == q.j
+                || ((p.i - 1) / blen == (q.i - 1) / blen && (p.j - 1) / blen == (q.j - 1) / blen)
+        })
         .map(|r| r.1)
         .collect::<Vec<usize>>()
 }
@@ -35,7 +39,7 @@ pub fn sudoku_ident(fixed: &[(Pos, usize)]) -> Rules {
             let preset = collect_digits(fixed, p, blen);
             // at-least constraints
             let v = (1..=(range as usize))
-                .filter(|d| !preset.contains(&d))
+                .filter(|d| !preset.contains(d))
                 .map(|d| p.state(d, true).as_lit())
                 .collect::<Vec<_>>();
             rules.push(v);
@@ -209,7 +213,7 @@ pub fn sudoku_block(fixed: &[(Pos, usize)]) -> Rules {
     rules
 }
 
-pub fn veried(ans: &[Vec<usize>]) -> bool {
+pub fn verify(ans: &[Vec<usize>]) -> bool {
     let range = get_range();
     let blen = get_block_len() as usize;
     let sorted = (1..=range as usize).collect::<Vec<usize>>();
@@ -220,7 +224,7 @@ pub fn veried(ans: &[Vec<usize>]) -> bool {
             dbg!((i, l));
             return false;
         }
-    } 
+    }
     for j in 0..range as usize {
         let mut l = ans.iter().map(|l| l[j]).collect::<Vec<usize>>();
         l.sort_unstable();
@@ -228,13 +232,13 @@ pub fn veried(ans: &[Vec<usize>]) -> bool {
             dbg!((j, l));
             return false;
         }
-    } 
+    }
     for i in 0..blen as usize {
         for j in 0..blen as usize {
             let mut l = Vec::new();
-            for line in &ans[i*blen..(i+1)*blen] {
-                for jj in j*blen..(j+1)*blen {
-                    l.push(line[jj]);
+            for line in &ans[i * blen..(i + 1) * blen] {
+                for c in line.iter().take((j + 1) * blen).skip(j * blen) {
+                    l.push(*c);
                 }
             }
             assert_eq!(l.len(), range as usize);

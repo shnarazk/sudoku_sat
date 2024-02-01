@@ -22,12 +22,14 @@ pub fn main() {
         .map(|(p, d)| p.state(*d, true).as_lit())
         .collect::<Vec<_>>();
     let mut file = File::create("sudoku64.cnf").expect("fail to create 'sudoku64.cnf'");
-    file.write_all(&miracle_sudoku::cnf::as_cnf_u8(&rules, &vec![]))
+    file.write_all(&miracle_sudoku::cnf::as_cnf_u8(&rules, &[]))
         .expect("fail to write 'sudoku64.cnf'");
     println!("#rules: {}", rules.len());
-    let mut config = Config::default();
-    config.splr_interface = true;
-    config.quiet_mode = false;
+    let config = splr::Config {
+        splr_interface: true,
+        quiet_mode: false,
+        ..Default::default()
+    };
     let mut solver = Solver::try_from((config, rules.as_ref())).expect("panic");
     for a in setting.iter() {
         solver.add_assignment(*a).expect("panic");
@@ -51,7 +53,7 @@ pub fn main() {
         }
         println!();
     }
-    println!("verified {}", veried(&answer));
+    println!("verified {}", verify(&answer));
 }
 
 const SUDOKU: &str = "\

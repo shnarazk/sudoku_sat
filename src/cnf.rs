@@ -5,7 +5,7 @@ pub fn dump_as_cnf(rules: &Rules, assigns: &[i32]) {
     let num_cls = rules.len();
     let num_var = rules
         .iter()
-        .map(|v| v.iter().map(|v| v.abs() as usize).max().unwrap_or(0))
+        .map(|v| v.iter().map(|v| v.unsigned_abs()).max().unwrap_or(0))
         .max()
         .unwrap_or(0);
     println!("p cnf {} {}", num_var, num_cls + assigns.len());
@@ -26,7 +26,7 @@ pub fn as_cnf_u8(rules: &Rules, assigns: &[i32]) -> Vec<u8> {
     let num_cls = rules.len();
     let num_var = rules
         .iter()
-        .map(|v| v.iter().map(|v| v.abs() as usize).max().unwrap_or(0))
+        .map(|v| v.iter().map(|v| v.unsigned_abs()).max().unwrap_or(0))
         .max()
         .unwrap_or(0);
     result

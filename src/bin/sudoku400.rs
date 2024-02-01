@@ -30,9 +30,11 @@ pub fn main() {
     file.write_all(&miracle_sudoku::cnf::as_cnf_u8(&rules, &setting))
         .expect("fail to write 'sudoku400.cnf'");
     println!("#rules: {}", rules.len()); // println!("{:?}", &rules[1..20]);
-    let mut config = Config::default();
-    config.splr_interface = true;
-    config.quiet_mode = false;
+    let config = splr::Config {
+        splr_interface: true,
+        quiet_mode: false,
+        ..Default::default()
+    };
     let mut solver = Solver::try_from((config, rules.as_ref())).expect("panic");
     for a in setting.iter() {
         solver.add_assignment(*a).expect("panic");
@@ -56,7 +58,7 @@ pub fn main() {
         }
         println!();
     }
-    println!("verified {}", veried(&answer));
+    println!("verified {}", verify(&answer));
 }
 
 fn parse(tick: usize) -> Vec<(Pos, usize)> {
